@@ -1,0 +1,28 @@
+version: '3.9'
+services:
+  backend:
+    build: 
+      context: ./backend
+      # dockerfile: Dockerfile
+      volumes:
+        - ./backend:/logs:/backend/logs
+        - ./backend:/upload:/backend/upload
+    ports:
+      - "8000:8000"
+    depends_on:
+      - database
+    restart: always
+  frontend:
+    build:
+      context: ./frontend
+      # dockerfile: Dockerfile
+    ports:
+      - "80:5173"
+    depends_on:
+      - backend
+    restart: always
+  database:
+    image: mongo
+    ports:
+      - "27017:27017"
+    restart: always
